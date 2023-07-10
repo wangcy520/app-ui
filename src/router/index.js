@@ -162,9 +162,22 @@ const router = new Router({
         require(['../views/promosi/promosi'], resolve)
       }
     },
-
-
-
+    {
+      path: '/poinDetail',
+      name: 'poinDetail',
+      meta: {keepAlive: false},
+      component: (resolve) => {
+        require(['../views/poinDetail/poinDetail'], resolve)
+      }
+    },
+    {
+      path: '/submitPoinOrder',
+      name: 'submitPoinOrder',
+      meta: {keepAlive: false},
+      component: (resolve) => {
+        require(['../views/poinDetail/submitPoinOrder'], resolve)
+      }
+    }
   ]
 })
 

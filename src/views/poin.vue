@@ -7,31 +7,15 @@
     <div class="list">
       <!-- <scroller ref="scroller" class="my-scroller" :on-refresh="refresh" :on-infinite="infinite" noDataText="已无更多数据"> -->
       <div class="content">
-        <div class="content-item">
+        <div @click="toDetail(item)" class="content-item" v-for="(item,index) in listPoin" :key="index">
           <div class="content-box">
-            <div class="img">1</div>
+            <div class="img">
+              <img :src="item.imageUrl[0]" alt="">
+             </div>
             <div class="tp">
-              <div class="txt">Uang tunai 2x</div>
-              <div class="price">Rp5.000</div>
-              <div class="tips">Sold 245729</div>
-            </div>
-          </div>
-        </div>
-        <div class="content-item">
-          <div class="content-box">
-            <div class="img">1</div>
-            <div class="tp">
-              <div class="txt">Uang tunai 2x</div>
-              <div class="price">Rp5.000</div>
-            </div>
-          </div>
-        </div>
-        <div class="content-item">
-          <div class="content-box">
-            <div class="img">1</div>
-            <div class="tp">
-              <div class="txt">Uang tunai 2x</div>
-              <div class="price">Rp5.000</div>
+              <div class="txt">{{item.name}} Rp{{item.amount}}</div>
+              <div class="price">Rp{{item.points}}</div>
+              <div class="tips">Sold {{item.sale}}</div>
             </div>
           </div>
         </div>
@@ -49,10 +33,26 @@ export default {
   data(){
     return{
       list:0,
-      keyword:''
+      keyword:'',
+      listPoin:[]
     }
   },
+  created(){
+    this.getList()
+  },
   methods: {
+    toDetail(e){
+      this.$router.push({
+        name: "poinDetail",
+        query: e
+      });
+    },
+
+    getList(){
+      this.$axios.get("/point-exchange/list", {}).then(res => {
+        this.listPoin = res.data.data;
+      });
+    },
     refresh (done) {
       this.list = []
       // this.params.pageNum = 1
@@ -114,7 +114,8 @@ export default {
         margin: 10px;
         border: 1px solid #ccc;
 
-        .img {
+        .img img{
+          width: 100%;
           height: 120px;
           background: #000;
         }

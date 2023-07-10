@@ -14,7 +14,7 @@
         <div class="t">Selamat kepada Wulan.memenanakan hadiah Rp300.000.Mari kita beri selamat padanya</div>
       </div>
       <div class="list">
-        <div style="display: flex;justify-content:space-between;">
+        <div style="display: flex;justify-content:space-between;padding:10px 0">
           <div>Popular</div>
           <div>SEMUA barang ></div>
         </div>
@@ -42,7 +42,6 @@
     <div class="list_1">
         <div style="display: flex;justify-content:space-between;">
           <div>Jenis Promosi</div>
-        
         </div>
         <div class="content">
           <div v-for="(item, index) in promosiList" :key="index" class="content-item" @click="toPromosi(item)">
@@ -69,8 +68,8 @@ export default {
   data() {
     return {
       promosiList:[
-        {id:1,imageUrl:'https://www.im2017.com//uploads/attach/2020/05/20200511/34cbf932b6da7f45ae64799defa1e7ca.png'},
-        {id:2,imageUrl:'https://www.im2017.com//uploads/attach/2020/05/20200511/fd98c0ac34440910f3819b9d7bbbe42c.png'},
+        {id:1,imageUrl:require('@/assets/img/left.png')},
+        {id:2,imageUrl:require('@/assets/img/right.png')},
       ],
    
       goodList: [],
@@ -147,36 +146,15 @@ export default {
   },
   created() {
     this.getGoodList();
-    // this.getPromosiList()
+   
   },
   methods: {
-
     toPromosi(item){
       this.$router.push({
         name: 'promosi',
         query:item.id
       });
     },
-
-
-    getPromosiList(){
-      let data = {
-       
-        isVip: false
-      };
-      this.$axios.post("/product-info/list", data).then(res => {
-        this.promosiList.push(res.data.data[0]);
-      });
-      
-      let data1 = {
-       
-       isVip: true
-     };
-      this.$axios.post("/product-info/list", data1).then(res => {
-        this.promosiList.push(res.data.data[0]);
-      });
-    },
-
     getGoodList() {
       let data = {
         orderColumn: "",
@@ -197,7 +175,7 @@ export default {
       this.$router.push({
         path: this.itemList[index].url
       });
-    }
+    },
   }
 };
 </script>
