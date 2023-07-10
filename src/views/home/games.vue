@@ -5,9 +5,9 @@
             <div style="line-height: 100px;">mulai bermain game</div>
             <div style="display: flex;justify-content: space-around;align-items: center;width: 100%;">
                 <div class="tips" @click="tabs(1)" :class="[num == 1 ? 'active' : '']">
-                    Nomorganjil</div>
+                    Nomor ganjil</div>
                 <div class="tips" @click="tabs(0)" :class="[num == 0 ? 'active' : '']">
-                    Nomorgenap</div>
+                    Nomor genap</div>
             </div>
             <div style="line-height: 100px;">
                 <span
@@ -33,7 +33,7 @@
         </div>
     </div>
 </template>
-  
+
 <script>
 import { Dialog } from 'vant';
 export default {
@@ -58,22 +58,11 @@ export default {
         },
 
         submit() {
-            if (this.num) {
-                this.$toast({
-                    msg: '登录成功',
-                    type: 'success'
-                })
-                return
-            }
-            let data = {
-                orderId: this.obj.id,
-                num: this.num
-            }
             this.$axios.post('/player-order/choose?orderId=' + this.obj.id + '&num=' + this.num,).then(res => {
                 let data = res.data.data
                 Dialog.alert({
                     title: 'Sukses',
-                    message: `Prediksi ini berhasil, Silakan tunggu hasil ${res.data.lotteryId}`,
+                    message: `Prediksi ini berhasil, Silakan tunggu hasil ${data.lotteryId}`,
                     confirmButtonText: 'Konfirmasikan'
                 }).then(() => {
                     this.$router.push({
@@ -92,7 +81,7 @@ export default {
     }
 }
 </script>
-  
+
 <style scoped lang="less">
 .mainPage {
     height: 100%;
@@ -159,4 +148,3 @@ export default {
     text-shadow: 2px 2px 2px #e49608;
 }
 </style>
-  
