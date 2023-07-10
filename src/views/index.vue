@@ -71,7 +71,7 @@ export default {
         {id:1,imageUrl:require('@/assets/img/left.png')},
         {id:2,imageUrl:require('@/assets/img/right.png')},
       ],
-   
+
       goodList: [],
       activeIndex: 0,
       showDots: false,
@@ -146,7 +146,7 @@ export default {
   },
   created() {
     this.getGoodList();
-   
+
   },
   methods: {
     toPromosi(item){
@@ -158,8 +158,8 @@ export default {
     getGoodList() {
       let data = {
         orderColumn: "",
-        orderType: true,
-        isVip: false
+        orderType: null,
+        isVip: null
       };
       this.$axios.post("/product-info/list", data).then(res => {
         this.goodList = res.data.data;
@@ -276,7 +276,7 @@ export default {
       .content-box {
         margin: 10px;
         // border: 1px solid #ccc;
-       
+
 
         .img img {
           height: 120px;
@@ -284,7 +284,7 @@ export default {
           width: 100%;
           // margin: 15px 10px;
           border-radius: 5px;
-         
+
         }
 
         .tp {
