@@ -1,25 +1,41 @@
 <template>
   <div>
-    <div class="header">Points exchange zone</div>
-    <div class="search b-border">
-      <input type="text" placeholder="Search for product information" v-model.trim="keyword">
+    <div class="header">VIP Goods List</div>
+    <div class="search">
+      <div>Price</div>
+      <div>Sales volume</div>
     </div>
     <div class="list">
       <!-- <scroller ref="scroller" class="my-scroller" :on-refresh="refresh" :on-infinite="infinite" noDataText="已无更多数据"> -->
       <div class="content">
-        <div @click="toDetail(item)" class="content-item" v-for="(item,index) in listPoin" :key="index">
+        <div class="content-item">
           <div class="content-box">
-            <div class="img">
-              <img :src="item.imageUrl[0]" alt="">
-             </div>
+            <div class="img">1</div>
             <div class="tp">
-              <div class="txt">{{item.name}} Rp{{item.amount}}</div>
-              <div class="price">Rp{{item.points}}</div>
-              <div class="tips">Sold {{item.sale}}</div>
+              <div class="txt">Uang tunai 2x</div>
+              <div class="price">Rp5.000</div>
+              <div class="tips">Sold 245729</div>
             </div>
           </div>
         </div>
-     
+        <div class="content-item">
+          <div class="content-box">
+            <div class="img">1</div>
+            <div class="tp">
+              <div class="txt">Uang tunai 2x</div>
+              <div class="price">Rp5.000</div>
+            </div>
+          </div>
+        </div>
+        <div class="content-item">
+          <div class="content-box">
+            <div class="img">1</div>
+            <div class="tp">
+              <div class="txt">Uang tunai 2x</div>
+              <div class="price">Rp5.000</div>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- </scroller> -->
     </div>
@@ -34,33 +50,10 @@ export default {
   data(){
     return{
       list:0,
-      keyword:'',
-      listPoin:[]
+      keyword:''
     }
   },
-  created(){
-    this.getList()
-  },
   methods: {
-
-    toDetail(e){
-      this.$router.push({
-        name: "poinDetail",
-        query: e
-      });
-    },
-
-    getList(){
-      // let data = {
-      //   "orderColumn": "",
-      //   "orderType": true,
-      //   "isVip": false
-      // };
-      this.$axios.get("/point-exchange/list", {}).then(res => {
-        this.listPoin = res.data.data;
-      });
-    },
-
     refresh (done) {
       this.list = []
       // this.params.pageNum = 1
@@ -90,21 +83,13 @@ export default {
   align-items: center;
   justify-content: center;
 }
-.search {
-  padding: 10px 15px;
-  position: relative;
-
-  input {
-    width: 100%;
-    height: 40px;
-    border-radius: 4px;
-    font-size: 14px;
-    padding: 0 10px;
-    background: #fff;
-    border-radius: 50px;
-  }
+.search{
+  height: 50px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content:space-around;
 }
-
 .list {
   // height: calc(100% - 105px);
   // background-color: #fff;
@@ -122,8 +107,7 @@ export default {
         margin: 10px;
         border: 1px solid #ccc;
 
-        .img img{
-          width: 100%;
+        .img {
           height: 120px;
           background: #000;
         }

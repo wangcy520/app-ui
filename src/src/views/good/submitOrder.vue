@@ -4,43 +4,40 @@
             1 item
         </div>
         <div class="popupClass">
-            <img :src="obj.imageUrl" alt="">
+            <img src="@/assets/img/banner/banner2.jpg" alt="">
             <div class="popupClass_right">
                 <div style="display: flex;justify-content: space-between;width: 100%;">
-                    <span class="blackClass">{{obj.name}}</span>
-                    <span>x1</span>
+                    <span class="blackClass">Uang tunai 2x</span>
+                    <span>x{{ list.productCount }}</span>
                 </div>
-              
+                <div>
+                    <span style="color: red;">Rp</span>
+                    <span style="color: red;font-size: 16px;"></span>
+                </div>
             </div>
         </div>
-
         <div class="center">
-            <span>Phone</span>
-            <div class="center_10">
-                6281223219726
-            </div>
-        </div>
-
-
-        <div class="center">
-            <span>Payment Method</span>
+            <span>Metode Pembayaran</span>
             <div class="center_1">
-                <div class="center_1_round">￥</div>
-                <div class="center_1_c">Pay with points</div>
+                <div class="center_1_round">Rp</div>
+                <div class="center_1_c">Bayar via saldo</div>
                 <div class="center_1_r">
-                    <div>Available points.108</div>
-                   
+                    <div>Saldo tersedia</div>
+                    <div>Rp186.400</div>
                 </div>
             </div>
         </div>
-       
+        <div class="bottom">
+            <span>Total harga</span>
+            <span style="color: #b7adad;">Rp5.000</span>
+        </div>
         <div class="bottomBut">
             <div class="bottomBut_left">
                 <span>Total: </span>
-                <span style="color: red;">{{ obj.points }} <span>Points</span> </span>
+                <span style="color: red;">Rp{{ list.actualPrice }}</span>
             </div>
             <div>
-                <van-button class="submitBtn" round type="" @click="submit">Check Out</van-button>
+                <van-button class="submitBtn" round type="" @click="submit">Bayar</van-button>
             </div>
         </div>
     </div>
@@ -50,8 +47,7 @@
 export default {
     data() {
         return {
-            list: {},
-            obj:{}
+            list: {}
         }
     },
     methods: {
@@ -67,25 +63,21 @@ export default {
         },
         submit() {
             let data = {
-                pointId: this.obj.id
+                orderId: this.list.id
             }
-            this.$axios.post("/point-exchange/check?pointId="+this.obj.id, data).then(res => {
+            this.$axios.post("/player-order/pay", data).then(res => {
                 let data = res.data.data
-                this.$toast({
-                    msg: 'success',
-                    type: 'success'
-                })
-                // this.$router.push({
-                //     name: "paySuccess",
-                //     query:data
-                // });
+                this.$router.push({
+                    name: "paySuccess",
+                    query:data
+                });
             });
 
         }
     },
     mounted() {
         this.obj = this.$route.query
-        // this.getGoodList()
+        this.getGoodList()
         console.log(this.obj)
     }
 }
@@ -136,23 +128,11 @@ export default {
     align-items: center;
 }
 
-.center_10 {
-    display: flex;
-    margin-top: 10px;
-   
-    background-color: #f6f2f2;
-    padding: 5px 10px;
-    align-items: center;
-}
-
 .center_1_round {
     border-radius: 50%;
     background-color: orange;
     color: #fff;
     padding: 1px;
-    width: 20px;
-    height: 20px;
-    text-align: center;
 }
 
 .center_1_c {
