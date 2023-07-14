@@ -76,7 +76,12 @@ export default {
                     message: `Prediksi ini berhasil, Silakan tunggu hasil ${res.data.data.lotteryId}`,
                     confirmButtonText: 'Konfirmasikan'
                 }).then(() => {
-                    this.$router.push({
+                    // this.$router.push({
+                    //     name: "payDetails",
+                    //     query:data
+                    // });
+
+                        this.$router.replace({
                         name: "payDetails",
                         query:data
                     });

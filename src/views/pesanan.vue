@@ -2,13 +2,16 @@
   <div>
     <van-popup v-model="show">
       <div class="dialogBox">
+        <div class="dialogBox_item_2">
         <div class="dialogBox_1">
-          <span v-if="!dialogIottery" class="dialogBox_2">Tebus sukses</span>
-          <span v-if="dialogIottery" class="dialogBox_2">Promosi sukses</span>
-          <span v-if="!dialogIottery" class="dialogBox_3">Mendapat {{ dialogIotteryNumber }} points</span>
-          <span v-if="dialogIottery" class="dialogBox_3">Bayar {{ dialogIotteryNumber1 }}, Menerima uang tunai {{ dialogIotteryNumber }}</span>
+          <span v-if="!dialogIottery" class="dialogBox_2" style="color: #fff;">Tebus sukses</span>
+          <span v-if="dialogIottery" class="dialogBox_2" style="color: #fff;">Promosi sukses</span>
+          <span v-if="!dialogIottery" class="dialogBox_3" style="color: hsla(0,0%,100%,.6);">Mendapat {{ dialogIotteryNumber }} points</span>
+          <span v-if="dialogIottery" class="dialogBox_3" style="color: hsla(0,0%,100%,.6);">Bayar {{ dialogIotteryNumber1 }}, Menerima uang tunai {{
+            dialogIotteryNumber }}</span>
           <van-button @click="closeShow" class="dialogBox_4" icon="" type="round">yakin</van-button>
         </div>
+      </div>
       </div>
     </van-popup>
     <van-tabs v-model="active" animated color="#01c3f7" line-width="85px" @change="tasChange">
@@ -38,12 +41,12 @@
           </div>
           <div class="bottom">
             <span v-if="item.count > 0">Bonus hitungan mundur:{{ item.tiemCount }}</span>
-            <span class="bottom" v-if="item.payState == 1 && item.lotteryId  && item.status == 1">
+            <span class="bottom" v-if="item.payState == 1 && item.lotteryId && item.status == 1">
               <p class="bottom-txt" style="border:1px solid rgb(213, 232, 146);color:rgb(213, 232, 146)">Picking up</p>
               <p @click="checkLottery(item)" class="bottom-txt"
                 style="border:1px solid rgb(56, 143, 235);color:rgb(56, 143, 235)">Tebus poin</p>
             </span>
-            <span class="bottom" v-if="item.payState == 1 && item.lotteryId  && item.status == 2">
+            <span class="bottom" v-if="item.payState == 1 && item.lotteryId && item.status == 2">
               <p class="bottom-txt" style="border:1px solid rgb(213, 232, 146);color:rgb(213, 232, 146)">Picking up</p>
               <p @click="checkLottery(item)" class="bottom-txt"
                 style="border:1px solid rgb(56, 143, 235);color:rgb(56, 143, 235)">Refund</p>
@@ -105,7 +108,7 @@
               item.productCount) | moneyFormat }}</span></div>
           </div>
           <div class="bottom">
-            <p class="bottom-txt"  @click="toPayDetails(item)">Melihat detail</p>
+            <p class="bottom-txt" @click="toPayDetails(item)">Melihat detail</p>
           </div>
         </div>
       </van-tab>
@@ -182,10 +185,10 @@ export default {
         }
         this.show = true
         this.dialogIotteryNumber = res.data.data.amount
-        if(res.data.data.fee){
+        if (res.data.data.fee) {
           this.dialogIotteryNumber1 = res.data.data.fee
         }
-       
+
         this.getOrderList()
       })
     },
@@ -220,7 +223,7 @@ export default {
 
       }
       this.$axios.post('/player-order/list', data, str ? 'false' : '').then(res => {
-        if (res.data.data.list.length == 0) {
+        if (res.data.data.list.length == 0 && str == 'more') {
           this.flag = true
           return
         }
@@ -238,7 +241,7 @@ export default {
 
         if (this.active == 0) {
           this.list.forEach((item) => {
-            if (item.payState == 1 && item.lotteryId && item.status==0) {
+            if (item.payState == 1 && item.lotteryId && item.status == 0) {
               this.$axios.get('/player-order/getSeconds?orderId=' + item.id, {}).then(res1 => {
                 // item.count = (0 - res1.data.data)
                 item.count = res1.data.data
@@ -293,12 +296,15 @@ export default {
       this.pageNum = 1
       this.getOrderList()
     },
-    toPayDetails(e){{
-      this.$router.push({
-        name: "payDetails",
-        query: e
-      });
-    }}
+    toPayDetails(e) {
+      {
+        e.isflag = true
+        this.$router.push({
+          name: "payDetails",
+          query: e
+        });
+      }
+    }
   }
 }
 </script>
@@ -335,20 +341,40 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 .dialogBox_1 {
   height: 200px;
   width: 250px;
-  background-color: rgb(209, 28, 28);
-
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-image: url(../assets/img/bg1.png);
+  background-size: 100% 100%;
+  width: 80%;
+  height: 80%;
+  z-index: 1;
 }
-
+.dialogBox_item_2{
+  background-image: url(../assets/img/bg.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.van-popup{
+  background:none;
+  width: 90%;
+  height: 50%;
+}
 .dialogBox_2 {
-  margin-top: 50px;
+  margin-top: 100px;
   color: white;
   font-size: 20px;
 }
@@ -362,10 +388,10 @@ export default {
 
 .dialogBox_4 {
   /* height: 50px; */
-  background-color: yellow;
-  color: red;
+  background-color: #f8d168;
+  color: #EB4331;
   width: 160px;
-  margin-top: 10px;
-
+  margin-top: 30px;
+  padding:0 20px;
 }
 </style>

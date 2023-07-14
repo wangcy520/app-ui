@@ -43,7 +43,7 @@ export default {
     methods: {
         submit() {
             let data = this.obj
-            this.$router.push({
+            this.$router.replace({
                 name: "games",
                 query:data
             });

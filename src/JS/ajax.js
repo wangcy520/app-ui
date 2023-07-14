@@ -80,6 +80,14 @@ function post (url, data, loading=true) {
                 window.localStorage.removeItem('token')
                
               }
+              if(response.data.code==500){
+                if(response.data.message.indexOf('Only vip buy')!=-1){
+                  resolve(response)
+                 
+                }
+              }
+          
+            
              
             }
           }

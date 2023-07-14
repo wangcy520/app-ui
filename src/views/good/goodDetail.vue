@@ -145,8 +145,6 @@ export default {
       list.push(img)
     })
     this.imgList = list
-    
-   
   }
 };
 </script>

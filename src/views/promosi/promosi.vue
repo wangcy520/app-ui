@@ -9,32 +9,20 @@
             {{item.name}}
           </div>
           <div class="right_b">
-
             <div>
               <div class="right_b_text">
-              Rp{{item.price}}
+              Rp{{item.price | moneyFormat}}
                </div>
-
                <div class="right_b_1">
-              <span class="right_b_text_1">Rp{{item.vipPrice}}</span>
+              <span class="right_b_text_1">Rp{{item.vipPrice | moneyFormat}}</span>
               <img class="vipIcon" :src="vipIcon" alt="">
               <span style="margin-left: 10px;color: #aaa;">{{item.sale}}</span>
                </div>
             </div>
-
             <div class="cartIcon">
               <van-icon color="#ff3700" size="16px" name="shopping-cart-o" />
-
             </div>
-
-
-          
           </div>
-
-         
-         
-
-
         </div>
       </div>
     </div>
@@ -52,21 +40,22 @@ export default {
     }
   },
 
-  created() {
+  mounted() {
     this.getList()
 
 
   },
   methods: {
-    toDetail(item){
+    toDetail(e){
+      e.imageUrlCopy = this.$json.encodeObj(e.imageUrl)
       this.$router.push({
         name: "goodDetail",
-        query: item
+        query: e
       });
     },
     getList() {
 
-      if (this.$route.query == 1) {
+      if (this.$route.query.id == 1) {
         this.isVip = false
       } else {
         this.isVip = true
@@ -137,7 +126,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
- 
+
 }
 
 .header {
@@ -156,6 +145,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
- 
+
 }
 </style>

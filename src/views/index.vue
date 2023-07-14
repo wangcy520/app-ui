@@ -149,7 +149,7 @@ export default {
     toPromosi(item){
       this.$router.push({
         name: 'promosi',
-        query:item.id
+        query:item
       });
     },
     getGoodList() {

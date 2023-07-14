@@ -55,55 +55,55 @@ Vue.prototype.$toast = toast;
 // 目的是：判断当前用户中本地存储是否有token，使用户在登录之前，只能访问到/login页面，其他的页面是访问不到的。
 router.beforeEach((to, from, next) => {
 
-  if(from.path=='/payDetails'){
-    if(to.path == '/games'){
-        next({name:'pesanan'})
-    }
-  }
+  // if(from.path=='/payDetails'){
+  //   if(to.path == '/games'){
+  //       next({name:'pesanan'})
+  //   }
+  // }
 
-  if(from.path=='/paySuccess'){
-    if(to.path == '/submitOrder'){
-        next({name:'index'})
-    }
-  }
+  // if(from.path=='/paySuccess'){
+  //   if(to.path == '/submitOrder'){
+  //       next({name:'index'})
+  //   }
+  // }
 
-  if(from.path=='/games'){
-    if(to.path == '/paySuccess'){
-        next({name:'index'})
-    }
-  }
+  // if(from.path=='/games'){
+  //   if(to.path == '/paySuccess'){
+  //       next({name:'index'})
+  //   }
+  // }
 
-  if(from.path=='/index'){
-    if(to.path == '/paySuccess'){
-        next({name:'index'})
-    }
-  }
-  if(from.path=='/index'){
-    if(to.path == '/games'){
-        next({name:'index'})
-    }
-  }
-  if(from.path=='/index'){
-    if(to.path == '/submitOrder'){
-        next({name:'index'})
-    }
-  }
-  if(from.path=='/pesanan'){
-    if(to.path == '/games'){
-        next({name:'pesanan'})
-    }
-  }
+  // if(from.path=='/index'){
+  //   if(to.path == '/paySuccess'){
+  //       next({name:'index'})
+  //   }
+  // }
+  // if(from.path=='/index'){
+  //   if(to.path == '/games'){
+  //       next({name:'index'})
+  //   }
+  // }
+  // if(from.path=='/index'){
+  //   if(to.path == '/submitOrder'){
+  //       next({name:'index'})
+  //   }
+  // }
+  // if(from.path=='/pesanan'){
+  //   if(to.path == '/games'){
+  //       next({name:'pesanan'})
+  //   }
+  // }
 
-  if(from.path=='/pesanan'){
-    if(to.path == '/paySuccess'){
-        next({name:'pesanan'})
-    }
-  }
-  if(from.path=='/pesanan'){
-    if(to.path == '/submitOrder'){
-        next({name:'pesanan'})
-    }
-  }
+  // if(from.path=='/pesanan'){
+  //   if(to.path == '/paySuccess'){
+  //       next({name:'pesanan'})
+  //   }
+  // }
+  // if(from.path=='/pesanan'){
+  //   if(to.path == '/submitOrder'){
+  //       next({name:'pesanan'})
+  //   }
+  // }
  
 
   // to 即将进入的路由

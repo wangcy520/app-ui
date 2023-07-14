@@ -7,7 +7,7 @@
             <img :src="list.imageUrl" alt="">
             <div class="popupClass_right">
                 <div style="display: flex;justify-content: space-between;width: 100%;">
-                    <span class="blackClass"></span>
+                    <span class="blackClass">{{list.productName}}</span>
                     <span>x{{ list.productCount }}</span>
                 </div>
                 <div>
@@ -29,15 +29,15 @@
         </div>
         <div class="bottom">
             <span>Total harga</span>
-            <span style="color: #b7adad;">Rp{{ (list.actualPrice * list.productCount) | moneyFormat }}</span>
+            <span style="color: #b7adad;">Rp{{ (list.price * list.productCount) | moneyFormat }}</span>
         </div>
         <div class="bottomBut">
             <div class="bottomBut_left">
                 <span>Total: </span>
-                <span style="color: red;">Rp{{ (list.actualPrice * list.productCount) | moneyFormat }}</span>
+                <span style="color: red;">Rp{{ (list.price * list.productCount) | moneyFormat }}</span>
             </div>
             <div>
-                <van-button class="submitBtn" round type="" @click="submit">Bayar</van-button>
+                <van-button v-if="!hideButton" class="submitBtn" round type="" @click="submit">Bayar</van-button>
             </div>
         </div>
     </div>
@@ -47,6 +47,7 @@
 export default {
     data() {
         return {
+            hideButton:false,
             list: {},
             balance:localStorage.getItem('balance')
             // obj:{}
@@ -59,9 +60,20 @@ export default {
                 count: Number(this.obj.count),
             };
             this.$axios.post("/player-order/create", data).then(res => {
-                console.log(res.data.data)
+               
+                if(res.data.code==500){
+                if(res.data.message.indexOf('Only vip buy')!=-1){
+                    this.hideButton = true
+                 
+                }
+              }else{
                 this.list = res.data.data;
+              }
+                
+                
+                
             });
+            
         },
         submit() {
             let data = {
@@ -69,7 +81,7 @@ export default {
             }
             this.$axios.post("/player-order/pay", data).then(res => {
                 let data = res.data.data
-                this.$router.push({
+                this.$router.replace({
                     name: "paySuccess",
                     query:data
                 });
@@ -79,14 +91,14 @@ export default {
     },
     mounted() {
         this.obj = this.$route.query
-        console.log(this.obj)
+     
         if(!this.obj.orderNo){
             this.getGoodList()
 
         }else{
             this.list = this.obj
         }
-        console.log(this.obj)
+      
     }
 }
 </script>

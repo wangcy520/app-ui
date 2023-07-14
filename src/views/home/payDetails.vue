@@ -13,7 +13,7 @@
                         <img style="width:100%;height:100%" :src="obj.imageUrl" alt="">
                     </div>
                     <div class="font">
-                        <div>{{ obj.name }}</div>
+                        <div>{{ obj.productName }}</div>
                         <div style="color:red">Rp{{ obj.actualPrice | moneyFormat }}</div>
                     </div>
                     <div class="num">x{{obj.productCount}}</div>
@@ -51,6 +51,10 @@
                 <div class="details-item">
                     <div>Waktu membukaan:</div>
                     <div class="gran">{{obj.orderTime}}</div>
+                </div>
+                <div class="details-item" v-if="obj.isflag">
+                    <div>lottery Numbers:</div>
+                    <div class="gran">{{obj.lotteryNum}}</div>
                 </div>
                 <div class="details-item">
                     <div>Pilihan saya:</div>
@@ -95,6 +99,7 @@ export default {
     },
     mounted(){
         this.obj = this.$route.query
+        console.log(this.obj)
     }
 }
 </script>
