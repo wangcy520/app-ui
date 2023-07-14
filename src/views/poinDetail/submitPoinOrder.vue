@@ -75,10 +75,14 @@ export default {
                     msg: 'success',
                     type: 'success'
                 })
-                // this.$router.push({
-                //     name: "paySuccess",
-                //     query:data
-                // });
+
+                setTimeout(()=>{
+                    this.$router.push({
+                    name: "mine",
+                  
+                });
+                },500)
+            
             });
 
         }

@@ -24,7 +24,7 @@
               <div class="img"><img :src="item.imageUrl[0]" alt=""></div>
               <div class="tp">
                 <div class="txt">{{ item.name }}</div>
-                <div class="price">Rp{{ item.price }}</div>
+                <div class="price">Rp{{ item.price | moneyFormat }}</div>
               </div>
             </div>
           </div>
@@ -162,6 +162,8 @@ export default {
       });
     },
     toGoodDetail(e) {
+     
+      e.imageUrlCopy = this.$json.encodeObj(e.imageUrl)
       this.$router.push({
         name: "goodDetail",
         query: e

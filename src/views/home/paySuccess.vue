@@ -2,7 +2,9 @@
     <div>
         <div class="details">
             <div class="box">
-                <div class="details-icon">icon</div>
+                <div class="details-icon">
+                    <van-icon size="100" color="red" name="checked" />
+                </div>
                 <div class="tips">Pembayaran berhasil</div>
             </div>
             <div class="van-hairline--top"></div>
@@ -16,11 +18,11 @@
             </div>
             <div class="details-item">
                 <div>Metode Pembayaran:</div>
-                <div class="gran">{{ obj.playType }}</div>
+                <div class="gran">Bayar via saldo</div>
             </div>
             <div class="details-item">
                 <div>Total harga:</div>
-                <div class="gran">rp {{ obj.price }}</div>
+                <div class="gran">rp {{ (obj.actualPrice * obj.productCount) | moneyFormat }}</div>
             </div>
             <div class="van-hairline--bottom"></div>
             <div class="btns">
@@ -82,7 +84,6 @@ export default {
 .details-icon {
     width: 100px;
     height: 100px;
-    background: #000;
     margin: 10px;
 }
 

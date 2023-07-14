@@ -71,7 +71,7 @@ export default {
     getUserInfo(){
       this.$axios.post('/account/getInfo', {}).then(res => {
           this.userInfo = res.data.data
-          
+          localStorage.setItem('balance',this.userInfo.balance)
       })
     },
     toTopUp(){

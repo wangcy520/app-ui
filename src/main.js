@@ -30,10 +30,82 @@ let cale = window.screen.availWidth > 750 ? 2 : window.screen.availWidth / 375;
 window.document.documentElement.style.fontSize = `${100 * cale}px`;
 
 
+Vue.filter('moneyFormat',(money)=>{
+ 
+  if(!money) return '0.000'
+ 
+  return  Number(money).toFixed(3)
+})
 
+const encodeObj = (obj) =>{
+	return encodeURIComponent(JSON.stringify(obj))
+}
+
+
+//将string code 转成 对象
+const decodeObj = (obj) =>{
+
+	//  obj = obj.replace(/%/g, '%25');
+	return JSON.parse(decodeURIComponent(obj))
+}
+
+Vue.prototype.$json = {encodeObj,decodeObj};
+Vue.prototype.$toast = toast;
 // 在此处进行配置全局的路由守卫（全局前置钩子）
 // 目的是：判断当前用户中本地存储是否有token，使用户在登录之前，只能访问到/login页面，其他的页面是访问不到的。
 router.beforeEach((to, from, next) => {
+
+  if(from.path=='/payDetails'){
+    if(to.path == '/games'){
+        next({name:'pesanan'})
+    }
+  }
+
+  if(from.path=='/paySuccess'){
+    if(to.path == '/submitOrder'){
+        next({name:'index'})
+    }
+  }
+
+  if(from.path=='/games'){
+    if(to.path == '/paySuccess'){
+        next({name:'index'})
+    }
+  }
+
+  if(from.path=='/index'){
+    if(to.path == '/paySuccess'){
+        next({name:'index'})
+    }
+  }
+  if(from.path=='/index'){
+    if(to.path == '/games'){
+        next({name:'index'})
+    }
+  }
+  if(from.path=='/index'){
+    if(to.path == '/submitOrder'){
+        next({name:'index'})
+    }
+  }
+  if(from.path=='/pesanan'){
+    if(to.path == '/games'){
+        next({name:'pesanan'})
+    }
+  }
+
+  if(from.path=='/pesanan'){
+    if(to.path == '/paySuccess'){
+        next({name:'pesanan'})
+    }
+  }
+  if(from.path=='/pesanan'){
+    if(to.path == '/submitOrder'){
+        next({name:'pesanan'})
+    }
+  }
+ 
+
   // to 即将进入的路由
   // from 在哪个路由进入的
   // next 放行

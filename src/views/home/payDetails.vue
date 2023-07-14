@@ -1,20 +1,22 @@
 <template>
     <div style="height: 100%;">
-        <div class="header">Points exchange zone</div>
+        <div class="header">Detail pesanan</div>
         <div class="scoll">
             <div class="top">
-                <div style="font-weight: 500;">Penjual belum mengirim produk, mohontunggu</div>
+                <div style="font-weight: 600;">Penjual belum mengirim produk, mohontunggu</div>
                 <div>2023-07-03 17:08:19</div>
             </div>
             <div class="pay">
                 <div class="pay-title">1 item</div>
                 <div class="pay-item">
-                    <div class="pay-icon">icon</div>
-                    <div class="font">
-                        <div>Uang tunai 2x</div>
-                        <div style="color:red">Rp5.000</div>
+                    <div class="pay-icon">
+                        <img style="width:100%;height:100%" :src="obj.imageUrl" alt="">
                     </div>
-                    <div class="num">x1</div>
+                    <div class="font">
+                        <div>{{ obj.name }}</div>
+                        <div style="color:red">Rp{{ obj.actualPrice | moneyFormat }}</div>
+                    </div>
+                    <div class="num">x{{obj.productCount}}</div>
                 </div>
             </div>
             <div class="details">
@@ -62,14 +64,14 @@
             <div class="bottom">
                 <div class="total">
                     <div>Total Amount:</div>
-                    <div>Rp {{obj.price * obj.productCount}}</div>
+                    <div>Rp {{(obj.price * obj.productCount) | moneyFormat}}</div>
                 </div>
-                <div class="price">Amount paid:<p style="color:red">Rp {{obj.price}}</p>
+                <div class="price">Amount paid:<p style="color:red">Rp {{obj.price | moneyFormat}}</p>
                 </div>
             </div>
         </div>
         <div class="btns">
-            <span class="btn">Memesanan ulang</span>
+            <span @click="toOrderList" class="btn">Memesanan ulang</span>
         </div>
     </div>
 </template>
@@ -82,6 +84,13 @@ export default {
         }
     },
     methods: {
+
+        toOrderList(){
+            this.$router.push({
+             name: "pesanan",
+        });
+      
+        },
 
     },
     mounted(){
@@ -121,8 +130,9 @@ export default {
 }
 
 .pay-icon {
-    width: 30%;
+    width: 23%;
     height: 70px;
+    margin-right: 2%;
 }
 
 .font {
@@ -188,9 +198,9 @@ export default {
 
 .btn {
     padding: 0.05rem 0.1rem;
-    border: 0.01rem solid #ccc;
+    border: 1px solid rgb(252, 206, 72);
+    color: rgb(252, 206, 72);
     border-radius: 0.1rem;
-    color: #ccc;
 }
 
 .scoll {

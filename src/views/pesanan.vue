@@ -3,101 +3,83 @@
     <van-popup v-model="show">
       <div class="dialogBox">
         <div class="dialogBox_1">
-          <span  class="dialogBox_2">Tebus sukses</span>
+          <span v-if="!dialogIottery" class="dialogBox_2">Tebus sukses</span>
+          <span v-if="dialogIottery" class="dialogBox_2">Promosi sukses</span>
           <span v-if="!dialogIottery" class="dialogBox_3">Mendapat {{ dialogIotteryNumber }} points</span>
-          <span v-if="dialogIottery" class="dialogBox_3">Bayar {{ dialogIotteryNumber }}, Menerima uang tunai3920</span>
-
-            <van-button @click="closeShow" class="dialogBox_4" icon="" type="round">yakin</van-button>
-
+          <span v-if="dialogIottery" class="dialogBox_3">Bayar {{ dialogIotteryNumber1 }}, Menerima uang tunai {{ dialogIotteryNumber }}</span>
+          <van-button @click="closeShow" class="dialogBox_4" icon="" type="round">yakin</van-button>
         </div>
       </div>
     </van-popup>
     <van-tabs v-model="active" animated color="#01c3f7" line-width="85px" @change="tasChange">
       <van-tab title="Dioperasikan" style="padding-bottom: 50px;">
         <!-- <scroller ref="scroller" class="my-scroller" :on-refresh="refresh" :on-infinite="infinite" noDataText="已无更多数据"> -->
-
-
-          <div style="background:#fff;margin: 10px;padding: 10px;" v-for="(item, index) in list" :key="index">
+        <div style="background:#fff;margin: 10px;padding: 10px;" v-for="(item, index) in list" :key="index">
           <div class="content-item">
             <div>{{ item.createdTime }}</div>
-            <div class="box">{{ item.type }}</div>
+            <div class="box" v-if="item.payState == 0">Pesanan tidak dibayar</div>
+            <div class="box" v-if="item.payState == 1 && !item.lotteryId">Is not on sales yet</div>
+            <div class="box" v-if="item.status == 1">Promosi gagal</div>
+            <div class="box" v-if="item.status == 2">Promosi sukses</div>
           </div>
           <div style="border-top: 1px solid #f5e9e9;border-bottom: 1px solid #f5e9e9;padding: 10px 0px;">
             <div style="display: flex;height: 100px;">
-              <div style="width:30%">icon</div>
+              <div style="width:25%;margin-right: 2%;">
+                <img style="width:100%;height:100%" :src="item.imageUrl" alt="">
+              </div>
               <div style="width:50%">Pemula 2x</div>
               <div style="width:20%;color: #ccc;">
-                <div>Rp{{ item.price }}</div>
+                <div>Rp{{ item.price | moneyFormat }}</div>
                 <div>X{{ item.productCount }}</div>
               </div>
             </div>
-            <div style="text-align: right;">1 ltem,Jumlah total <span style="color:red">Rp{{ item.price *
-              item.productCount }}</span></div>
+            <div style="text-align: right;">1 ltem,Jumlah total <span style="color:red">Rp{{ (item.price *
+              item.productCount) | moneyFormat }}</span></div>
           </div>
           <div class="bottom">
-
-
-
-
-
-            <span v-if="item.count>0">Bonus hitungan mundur:{{item.tiemCount}}</span>
-            <span class="bottom" v-if="item.payState==1&&item.lotteryId&&item.count==0&&item.status==1">
-              <p  class="bottom-txt" style="border:1px solid rgb(213, 232, 146);color:rgb(213, 232, 146)">Picking up</p>
-               <p @click="checkLottery(item)" class="bottom-txt" style="border:1px solid rgb(56, 143, 235);color:rgb(56, 143, 235)">Tebus poin</p>
+            <span v-if="item.count > 0">Bonus hitungan mundur:{{ item.tiemCount }}</span>
+            <span class="bottom" v-if="item.payState == 1 && item.lotteryId  && item.status == 1">
+              <p class="bottom-txt" style="border:1px solid rgb(213, 232, 146);color:rgb(213, 232, 146)">Picking up</p>
+              <p @click="checkLottery(item)" class="bottom-txt"
+                style="border:1px solid rgb(56, 143, 235);color:rgb(56, 143, 235)">Tebus poin</p>
             </span>
-
-            <span class="bottom" v-if="item.payState==1&&item.lotteryId&&item.count==0&&item.status==2">
-              <p  class="bottom-txt" style="border:1px solid rgb(213, 232, 146);color:rgb(213, 232, 146)">Picking up</p>
-               <p @click="checkLottery(item)" class="bottom-txt" style="border:1px solid rgb(56, 143, 235);color:rgb(56, 143, 235)">Refund</p>
+            <span class="bottom" v-if="item.payState == 1 && item.lotteryId  && item.status == 2">
+              <p class="bottom-txt" style="border:1px solid rgb(213, 232, 146);color:rgb(213, 232, 146)">Picking up</p>
+              <p @click="checkLottery(item)" class="bottom-txt"
+                style="border:1px solid rgb(56, 143, 235);color:rgb(56, 143, 235)">Refund</p>
             </span>
-
-
-            <!-- <block v-if="item.lottery&&item.payState==1&&item.lotteryId">
-              <p  class="bottom-txt" style="border:1px solid rgb(213, 232, 146);color:rgb(213, 232, 146)">Mengambil</p>
-               <p  class="bottom-txt" style="border:1px solid rgb(56, 143, 235);color:rgb(56, 143, 235)">Refund</p>
-            </block> -->
-
-
-
-            <p @click="toPay(item)" v-if="item.payState==0&&!item.lotteryId" class="bottom-txt" style="border:1px solid rgb(56, 143, 235);color:rgb(56, 143, 235)">to Pay</p>
-            <p @click="toGame(item)" v-if="item.payState==1&&!item.lotteryId" class="bottom-txt" style="border:1px solid rgb(56, 143, 235);color:rgb(56, 143, 235)">to Game</p>
-            <p class="bottom-txt">Melihat detail</p>
+            <p @click="toPay(item)" v-if="item.payState == 0 && !item.lotteryId" class="bottom-txt"
+              style="border:1px solid rgb(56, 143, 235);color:rgb(56, 143, 235)">to Pay</p>
+            <p @click="toGame(item)" v-if="item.payState == 1 && !item.lotteryId" class="bottom-txt"
+              style="border:1px solid rgb(255, 3, 16);color:rgb(255, 1, 35)">HOT SPOT</p>
+            <p class="bottom-txt" @click="toPayDetails(item)">Melihat detail</p>
           </div>
         </div>
         <!-- </scroller> -->
       </van-tab>
-      <van-tab title="Terima">内容 2</van-tab>
-      <van-tab title="Selesai">内容 3</van-tab>
       <van-tab title="Dikonversikan" @change="tasChange" style="padding-bottom: 50px;">
         <!-- <scroller ref="scroller" class="my-scroller" :on-refresh="refresh" :on-infinite="infinite" noDataText="已无更多数据"> -->
         <div style="background:#fff;margin: 10px;padding: 10px;" v-for="(item, index) in list" :key="index">
           <div class="content-item">
             <div>{{ item.createdTime }}</div>
-            <div class="box">{{ item.type }}</div>
+            <div class="box">Promosi gagal</div>
           </div>
           <div style="border-top: 1px solid #f5e9e9;border-bottom: 1px solid #f5e9e9;padding: 10px 0px;">
             <div style="display: flex;height: 100px;">
-              <div style="width:30%">icon</div>
+              <div style="width:25%;margin-right: 2%;">
+                <img style="width:100%;height:100%" :src="item.imageUrl" alt="">
+              </div>
               <div style="width:50%">Pemula 2x</div>
               <div style="width:20%;color: #ccc;">
-                <div>Rp{{ item.price }}</div>
+                <div>Rp{{ item.price | moneyFormat }}</div>
                 <div>X{{ item.productCount }}</div>
               </div>
             </div>
-            <div style="text-align: right;">1 ltem,Jumlah total <span style="color:red">Rp{{ item.price *
-              item.productCount }}</span></div>
+            <div style="text-align: right;">1 ltem,Jumlah total <span style="color:red">Rp{{ (item.price *
+              item.productCount) | moneyFormat }}</span></div>
           </div>
           <div class="bottom">
-
-            <p  class="bottom-txt" style="border:1px solid rgb(213, 232, 146);color:rgb(213, 232, 146)">Picking up</p>
-               <p @click="checkLottery(item)" class="bottom-txt" style="border:1px solid rgb(56, 143, 235);color:rgb(56, 143, 235)">Tebus poin</p>
-
-
-            <!-- <block v-if="item.lottery&&item.payState==1&&item.lotteryId">
-              <p  class="bottom-txt" style="border:1px solid rgb(213, 232, 146);color:rgb(213, 232, 146)">Mengambil</p>
-               <p  class="bottom-txt" style="border:1px solid rgb(56, 143, 235);color:rgb(56, 143, 235)">Refund</p>
-            </block> -->
-            <p class="bottom-txt">Melihat detail</p>
+            <p class="bottom-txt" @click="toPayDetails(item)">Melihat detail</p>
           </div>
         </div>
         <!-- </scroller> -->
@@ -106,24 +88,24 @@
         <div style="background:#fff;margin: 10px;padding: 10px;" v-for="(item, index) in list" :key="index">
           <div class="content-item">
             <div>{{ item.createdTime }}</div>
-            <div class="box">{{ item.type }}</div>
+            <div class="box">Promosi sukses</div>
           </div>
           <div style="border-top: 1px solid #f5e9e9;border-bottom: 1px solid #f5e9e9;padding: 10px 0px;">
             <div style="display: flex;height: 100px;">
-              <div style="width:30%">icon</div>
+              <div style="width:25%;margin-right: 2%;">
+                <img style="width:100%;height:100%" :src="item.imageUrl" alt="">
+              </div>
               <div style="width:50%">Pemula 2x</div>
               <div style="width:20%;color: #ccc;">
-                <div>Rp{{ item.price }}</div>
+                <div>Rp{{ item.price | moneyFormat }}</div>
                 <div>X{{ item.productCount }}</div>
               </div>
             </div>
-            <div style="text-align: right;">1 ltem,Jumlah total <span style="color:red">Rp{{ item.price *
-              item.productCount }}</span></div>
+            <div style="text-align: right;">1 ltem,Jumlah total <span style="color:red">Rp{{ (item.price *
+              item.productCount) | moneyFormat }}</span></div>
           </div>
           <div class="bottom">
-            <p  class="bottom-txt" style="border:1px solid rgb(213, 232, 146);color:rgb(213, 232, 146)">Picking up</p>
-               <p @click="checkLottery(item)" class="bottom-txt" style="border:1px solid rgb(56, 143, 235);color:rgb(56, 143, 235)">Refund</p>
-            <p class="bottom-txt">Melihat detail</p>
+            <p class="bottom-txt"  @click="toPayDetails(item)">Melihat detail</p>
           </div>
         </div>
       </van-tab>
@@ -139,32 +121,32 @@ export default {
   components: { footerBar },
   data() {
     return {
-      dialogIottery:false,
-      dialogIotteryNumber:'',
-      show:false,
+      dialogIottery: false,
+      dialogIotteryNumber: '',
+      dialogIotteryNumber1: '',
+      show: false,
       active: 0,
       list: [],
       pageNum: 1,
       pageSize: 10,
       groupType: 0,
-      flag:false,
-      type:'',
-      total:''
+      flag: false,
+      type: '',
+      total: ''
     }
   },
-  mounted () {
-  // 这里用了个防抖函数 体验更优
-  window.addEventListener('scroll', this.handleScroll, 200)
-},
+  mounted() {
+    // 这里用了个防抖函数 体验更优
+    window.addEventListener('scroll', this.handleScroll, 200)
+  },
   created() {
     this.getOrderList()
   },
   methods: {
-
-    handleScroll () {
-            if(this.$route.path!='/pesanan'){
-                return
-            }
+    handleScroll() {
+      if (this.$route.path != '/pesanan') {
+        return
+      }
 
       // 窗口滚要做的操作写这里
       const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight // 滚动条高度
@@ -173,10 +155,10 @@ export default {
       if (scrollTop + clientHeight >= scrollHeight - 20) {
         // 快到底时----加载
 
-          if(this.flag == false){
+        if (this.flag == false) {
 
-            this.pageNum+=1
-            this.getOrderList('more') // 加载数据的方法
+          this.pageNum += 1
+          this.getOrderList('more') // 加载数据的方法
 
 
         }
@@ -185,39 +167,44 @@ export default {
       }
     },
 
-    closeShow(){
-      this.show= false
+    closeShow() {
+      this.show = false
     },
-    checkLottery(item){
-      this.$axios.get('/player-order/operate?orderId='+item.id, {}).then(res => {
-        if(item.status==1){
+    checkLottery(item) {
+      this.$axios.get('/player-order/operate?orderId=' + item.id, {}).then(res => {
+        if (item.status == 1) {
           //没中奖
           this.dialogIottery = false
 
-        }else if(item.status==2){
+        } else if (item.status == 2) {
           //中奖
           this.dialogIottery = true
         }
         this.show = true
-        this.dialogIotteryNumber = res.data.data
+        this.dialogIotteryNumber = res.data.data.amount
+        if(res.data.data.fee){
+          this.dialogIotteryNumber1 = res.data.data.fee
+        }
+       
         this.getOrderList()
       })
     },
 
-    toPay(item){
+    toPay(item) {
       let params = {
-            productId: item.productId,
-            count: item.productCount,
-        }
-        this.$router.push({
-          name: "submitOrder",
-          query:params
-        });
+        productId: item.productId,
+        count: item.productCount,
+        ...item
+      }
+      this.$router.push({
+        name: "submitOrder",
+        query: params
+      });
     },
-    toGame(item){
+    toGame(item) {
       this.$router.push({
         name: "games",
-        query:item
+        query: item
       });
     },
 
@@ -232,52 +219,53 @@ export default {
         }
 
       }
-      this.$axios.post('/player-order/list', data,str?'false':'').then(res => {
-           if(res.data.data.list.length==0){
-                    this.flag = true
+      this.$axios.post('/player-order/list', data, str ? 'false' : '').then(res => {
+        if (res.data.data.list.length == 0) {
+          this.flag = true
+          return
+        }
+
+        if (str == 'more') {
+          //分页加1
+          this.list = this.list.concat(res.data.data.list)
+        } else {
+          this.list = res.data.data.list
+
+        }
+
+
+
+
+        if (this.active == 0) {
+          this.list.forEach((item) => {
+            if (item.payState == 1 && item.lotteryId && item.status==0) {
+              this.$axios.get('/player-order/getSeconds?orderId=' + item.id, {}).then(res1 => {
+                // item.count = (0 - res1.data.data)
+                item.count = res1.data.data
+
+                item.Interval = setInterval(() => {
+                  if (item.count == 0) {
+                    clearInterval(item.Interval)
+                    this.getOrderList()
                     return
-                }
+                  }
+                  item.count -= 1
+                  let countStr = item.count % 60
+                  let countStr1 = ((item.count - countStr).toFixed(2)) / 60
+                  if (countStr < 10) {
+                    countStr = '0' + countStr
+                  }
+                  if (countStr1 < 10) {
+                    countStr1 = '0' + countStr1
+                  }
+                  item.tiemCount = countStr1 + ':' + countStr
 
-                if(str == 'more'){
-                    //分页加1
-                    this.list = this.list.concat(res.data.data.list)
-                }else{
-                    this.list = res.data.data.list
-
-                }
-
-
-
-
-        if(this.active==0){
-          this.list.forEach((item)=>{
-            if(item.payState==1&&item.lotteryId){
-              this.$axios.get('/player-order/getSeconds?orderId='+item.id, {}).then(res1 => {
-              // item.count = (0 - res1.data.data)
-              item.count =5
-
-              item.Interval = setInterval(() => {
-                if(item.count==0){
-                  clearInterval(item.Interval)
-                  return
-                }
-                item.count -=1
-               let countStr = item.count%60
-                let  countStr1 = ((item.count - countStr).toFixed(2))/60
-                if(countStr<10){
-                  countStr = '0'+countStr
-                }
-                if(countStr1<10){
-                  countStr1 = '0'+countStr1
-                }
-                item.tiemCount = countStr1 + ':' +countStr
-
-                this.list.splice()
-              }, 1000);
-          })
+                  this.list.splice()
+                }, 1000);
+              })
             }
 
-        })
+          })
         }
 
       })
@@ -300,19 +288,17 @@ export default {
       }
     },
     tasChange(e) {
-      let type = 0
-      if (e == 0) {
-        type = 0
-      } else if (e == 3) {
-        type = 1
-      } else if (e == 4) {
-        type = 2
-      }
       this.type = e
       this.list = []
       this.pageNum = 1
-      this.getOrderList(type)
-    }
+      this.getOrderList()
+    },
+    toPayDetails(e){{
+      this.$router.push({
+        name: "payDetails",
+        query: e
+      });
+    }}
   }
 }
 </script>
@@ -338,19 +324,20 @@ export default {
 
 .bottom-txt {
   padding: 5px 3px;
-  border: 1px solid #ccc;
+  border: 1px solid rgb(252, 206, 72);
+  color: rgb(252, 206, 72);
   border-radius: 10px;
-  color: #ccc;
   font-size: 14px;
   margin: 0 2px;
 }
-.dialogBox{
+
+.dialogBox {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.dialogBox_1{
+.dialogBox_1 {
   height: 200px;
   width: 250px;
   background-color: rgb(209, 28, 28);
@@ -359,24 +346,26 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-.dialogBox_2{
+
+.dialogBox_2 {
   margin-top: 50px;
   color: white;
   font-size: 20px;
 }
-.dialogBox_3{
+
+.dialogBox_3 {
   color: #a2a0a0;
   font-size: 18px;
   text-align: center;
 
 }
-.dialogBox_4{
+
+.dialogBox_4 {
   /* height: 50px; */
   background-color: yellow;
   color: red;
   width: 160px;
-    margin-top: 10px;
+  margin-top: 10px;
 
 }
-
 </style>

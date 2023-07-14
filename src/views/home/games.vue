@@ -4,10 +4,10 @@
         <div class="content">
             <div style="line-height: 100px;">mulai bermain game</div>
             <div style="display: flex;justify-content: space-around;align-items: center;width: 100%;">
-                <div class="tips" @click="tabs(1)" :class="[num == 1 ? 'active' : '']">
-                    Nomorganjil</div>
                 <div class="tips" @click="tabs(0)" :class="[num == 0 ? 'active' : '']">
-                    Nomorgenap</div>
+                    Nomor<br />ganjil</div>
+                <div class="tips" @click="tabs(1)" :class="[num == 1 ? 'active' : '']">
+                    Nomor<br />genap</div>
             </div>
             <div style="line-height: 100px;">
                 <span
@@ -58,7 +58,7 @@ export default {
         },
 
         submit() {
-            if (this.num) {
+            if (!this.num && this.num!=0) {
                 this.$toast({
                     msg: 'Perubahan sukses',
                     type: 'success'
@@ -73,7 +73,7 @@ export default {
                 let data = res.data.data
                 Dialog.alert({
                     title: 'Sukses',
-                    message: `Prediksi ini berhasil, Silakan tunggu hasil ${res.data.lotteryId}`,
+                    message: `Prediksi ini berhasil, Silakan tunggu hasil ${res.data.data.lotteryId}`,
                     confirmButtonText: 'Konfirmasikan'
                 }).then(() => {
                     this.$router.push({
@@ -149,7 +149,8 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #cabebe
+    border: 1px solid #cabebe;
+    text-align: center;
 }
 
 .active {

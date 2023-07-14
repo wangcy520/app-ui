@@ -4,14 +4,14 @@
             1 item
         </div>
         <div class="popupClass">
-            <img src="@/assets/img/banner/banner2.jpg" alt="">
+            <img :src="list.imageUrl" alt="">
             <div class="popupClass_right">
                 <div style="display: flex;justify-content: space-between;width: 100%;">
-                    <span class="blackClass">Uang tunai 2x</span>
+                    <span class="blackClass"></span>
                     <span>x{{ list.productCount }}</span>
                 </div>
                 <div>
-                    <span style="color: red;">Rp</span>
+                    <span style="color: red;">Rp{{ list.price | moneyFormat }}</span>
                     <span style="color: red;font-size: 16px;"></span>
                 </div>
             </div>
@@ -23,18 +23,18 @@
                 <div class="center_1_c">Bayar via saldo</div>
                 <div class="center_1_r">
                     <div>Saldo tersedia</div>
-                    <div>Rp186.400</div>
+                    <div>Rp {{balance}}</div>
                 </div>
             </div>
         </div>
         <div class="bottom">
             <span>Total harga</span>
-            <span style="color: #b7adad;">Rp5.000</span>
+            <span style="color: #b7adad;">Rp{{ (list.actualPrice * list.productCount) | moneyFormat }}</span>
         </div>
         <div class="bottomBut">
             <div class="bottomBut_left">
                 <span>Total: </span>
-                <span style="color: red;">Rp{{ list.actualPrice }}</span>
+                <span style="color: red;">Rp{{ (list.actualPrice * list.productCount) | moneyFormat }}</span>
             </div>
             <div>
                 <van-button class="submitBtn" round type="" @click="submit">Bayar</van-button>
@@ -47,7 +47,9 @@
 export default {
     data() {
         return {
-            list: {}
+            list: {},
+            balance:localStorage.getItem('balance')
+            // obj:{}
         }
     },
     methods: {
@@ -73,11 +75,17 @@ export default {
                 });
             });
 
-        }
+        },
     },
     mounted() {
         this.obj = this.$route.query
-        this.getGoodList()
+        console.log(this.obj)
+        if(!this.obj.orderNo){
+            this.getGoodList()
+
+        }else{
+            this.list = this.obj
+        }
         console.log(this.obj)
     }
 }

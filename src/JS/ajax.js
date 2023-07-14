@@ -70,10 +70,16 @@ function post (url, data, loading=true) {
             if(response.data.code==200){
               resolve(response)
             }else{
+             
              toast({
                 msg: response.data.message,
                  type: 'fail'
               })
+
+              if(response.data.message.indexOf('解析token错误')!=-1){
+                window.localStorage.removeItem('token')
+               
+              }
              
             }
           }
