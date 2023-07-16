@@ -60,20 +60,15 @@ export default {
                 count: Number(this.obj.count),
             };
             this.$axios.post("/player-order/create", data).then(res => {
-               
                 if(res.data.code==500){
+                    this.list = this.obj.item
                 if(res.data.message.indexOf('Only vip buy')!=-1){
                     this.hideButton = true
-                 
                 }
               }else{
                 this.list = res.data.data;
               }
-                
-                
-                
             });
-            
         },
         submit() {
             let data = {
@@ -86,19 +81,16 @@ export default {
                     query:data
                 });
             });
-
         },
     },
     mounted() {
         this.obj = this.$route.query
-     
         if(!this.obj.orderNo){
             this.getGoodList()
-
         }else{
             this.list = this.obj
         }
-      
+        console.log(this.list)      
     }
 }
 </script>

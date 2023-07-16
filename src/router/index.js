@@ -187,6 +187,74 @@ const router = new Router({
         require(['../views/home/homeList'], resolve)
       }
     },
+
+    {
+      path: '/editUser',
+      name: 'editUser',
+      meta: {keepAlive: false},
+      component: (resolve) => {
+        require(['../views/user/editUser'], resolve)
+      }
+    },
+
+    {
+      path: '/editPassword',
+      name: 'editPassword',
+      meta: {keepAlive: false},
+      component: (resolve) => {
+        require(['../views/user/editPassword'], resolve)
+      }
+    },
+    {
+      path: '/recordList',
+      name: 'recordList',
+      meta: {keepAlive: false},
+      component: (resolve) => {
+        require(['../views/mine/recordList'], resolve)
+      }
+    },
+    {
+      path: '/msgList',
+      name: 'msgList',
+      meta: {keepAlive: false},
+      component: (resolve) => {
+        require(['../views/user/msgList'], resolve)
+      }
+    },
+    {
+      path: '/myPay',
+      name: 'myPay',
+      meta: {keepAlive: false},
+      component: (resolve) => {
+        require(['../views/user/myPay'], resolve)
+      }
+    },
+
+    {
+      path: '/tagihan',
+      name: 'tagihan',
+      meta: {keepAlive: false},
+      component: (resolve) => {
+        require(['../views/user/tagihan'], resolve)
+      }
+    },
+    {
+      path: '/userPayList',
+      name: 'userPayList',
+      meta: {keepAlive: false},
+      component: (resolve) => {
+        require(['../views/user/userPayList'], resolve)
+      }
+    },
+
+    {
+      path: '/integral',
+      name: 'integral',
+      meta: {keepAlive: false},
+      component: (resolve) => {
+        require(['../views/user/integral'], resolve)
+      }
+    },
   ]
 })
 

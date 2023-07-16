@@ -162,7 +162,6 @@ export default {
       });
     },
     toGoodDetail(e) {
-     
       e.imageUrlCopy = this.$json.encodeObj(e.imageUrl)
       this.$router.push({
         name: "goodDetail",

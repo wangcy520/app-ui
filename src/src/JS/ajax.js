@@ -64,9 +64,9 @@ function post (url, data, loading=true) {
     http.post(url, data, { loading: loading })
       .then(
         response => {
-        
+
           if(response.status==200){
-          
+
             if(response.data.code==200){
               resolve(response)
             }else{
@@ -74,13 +74,13 @@ function post (url, data, loading=true) {
                 msg: response.data.message,
                  type: 'fail'
               })
-             
+
             }
           }
-          
+
         },
         err => {
-        
+
           toast({
             msg: 'wrong',
              type: 'fail'

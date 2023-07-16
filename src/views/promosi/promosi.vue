@@ -48,6 +48,7 @@ export default {
   methods: {
     toDetail(e){
       e.imageUrlCopy = this.$json.encodeObj(e.imageUrl)
+      e.fromPromosi = true
       this.$router.push({
         name: "goodDetail",
         query: e

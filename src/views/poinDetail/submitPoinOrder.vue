@@ -28,7 +28,7 @@
                 <div class="center_1_round">￥</div>
                 <div class="center_1_c">Pay with points</div>
                 <div class="center_1_r">
-                    <div>Available points.108</div>
+                    <div>Available points.{{poinSaya}}</div>
                    
                 </div>
             </div>
@@ -51,7 +51,8 @@ export default {
     data() {
         return {
             list: {},
-            obj:{}
+            obj:{},
+            poinSaya:localStorage.getItem('poinSaya')
         }
     },
     methods: {
